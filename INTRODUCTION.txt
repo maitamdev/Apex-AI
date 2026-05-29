@@ -1,0 +1,137 @@
+================================================================================
+                     🚀 APEX CODER CLI (APEX-CLI) v1.3.5 🚀
+                 Tài Liệu Giới Thiệu & Hướng Dẫn Sử Dụng Chi Tiết
+================================================================================
+
+1. GIỚI THIỆU CHUNG VỀ DỰ ÁN
+────────────────────────────────────────────────────────────────────────────────
+Apex Coder CLI (apex-cli) là một trợ lý lập trình thông minh (AI Coding Companion) 
+hoạt động trực tiếp trên giao diện dòng lệnh (CLI) hoặc bảng điều khiển Web 
+Dashboard đồ họa cao cấp. Công cụ này phân tích sâu sắc cấu trúc mã nguồn dự án, 
+xây dựng ngữ cảnh codebase tự động, giúp bạn thực thi tác vụ lập trình nhanh chóng.
+
+Các tính năng cốt lõi:
+* Hybrid Semantic Search: Quét toàn bộ file dự án vào database SQLite cục bộ 
+  để tìm kiếm thông tin thông minh dựa trên từ khóa, cấu trúc tệp và symbols.
+* AI Codebase Chat: Trò chuyện trực tiếp với AI có tích hợp đầy đủ ngữ cảnh 
+  (thư mục dự án, các file đang mở và quy tắc làm việc).
+* Agentic Mode: AI tự động phân tích lỗi, lập kế hoạch chỉnh sửa mã nguồn 
+  (tạo/ghi đè tệp tin) hoặc thực thi lệnh hệ thống dưới sự xác nhận an toàn của bạn.
+* Git Checkpoints: Tự động chụp ảnh sao lưu (snapshot) mã nguồn trước khi sửa đổi, 
+  cho phép khôi phục về trạng thái sạch gần nhất bất kỳ lúc nào nếu gặp lỗi.
+
+
+2. YÊU CẦU HỆ THỐNG & LƯU Ý ĐẶC BIỆT
+────────────────────────────────────────────────────────────────────────────────
+* Node.js: Hỗ trợ phiên bản 18, 20 hoặc 22.
+* Git: Đã được cài đặt và cấu hình biến môi trường PATH.
+
+⚠️ LƯU Ý QUAN TRỌNG KHI CÀI ĐẶT TRÊN NODE 24:
+Nếu bạn cài đặt bằng Node 24 và gặp lỗi biên dịch `node-gyp` (yêu cầu cài đặt Python 
+hoặc C++ compiler để build gói database `better-sqlite3`), lý do là vì phiên bản 
+Node 24 chưa có gói binary biên dịch sẵn (prebuilt binaries) chính thức từ thư viện.
+👉 CÁCH KHẮC PHỤC: Hãy hạ cấp (downgrade) Node.js trên máy về phiên bản LTS ổn định 
+   (Khuyên dùng Node 20 hoặc Node 22). Khi sử dụng Node 20/22, thư viện sẽ tự động 
+   tải về gói máy ảo prebuilt cực kỳ nhanh gọn mà không bắt cài thêm Python/C++.
+
+
+3. HƯỚNG DẪN CÀI ĐẶT
+────────────────────────────────────────────────────────────────────────────────
+Để sử dụng công cụ mọi lúc mọi nơi trên hệ điều hành của bạn, hãy mở Terminal 
+(macOS/Linux) hoặc PowerShell/CMD (Windows) và chạy lệnh cài đặt toàn cục (global):
+
+$ npm install -g apex-coder-cli
+
+
+4. CẤU HÌNH LẦN ĐẦU (FIRST-RUN SETUP)
+────────────────────────────────────────────────────────────────────────────────
+Sau khi cài đặt thành công, bạn di chuyển cửa sổ dòng lệnh vào thư mục dự án bất kỳ 
+mà bạn muốn làm việc và gõ lệnh sau để khởi chạy trình cài đặt:
+
+$ apex-cli
+
+Hệ thống sẽ phát hiện cấu hình trống và hiển thị bảng lựa chọn AI Provider:
+
+┌── Chọn nhà cung cấp AI của bạn: ─────────────────────────────────────────────┐
+│ 1. GitHub Models (Mặc định - Hoàn toàn miễn phí, khuyên dùng)               │
+│ 2. OpenRouter (Nhiều mô hình xịn như Gemini Flash, Claude Sonnet...)         │
+└──────────────────────────────────────────────────────────────────────────────┘
+
+* Nếu chọn 1 (GitHub Models - Hoàn toàn miễn phí):
+  - Bước 1: Đăng nhập GitHub và truy cập trực tiếp: https://github.com/settings/tokens
+  - Bước 2: Nhấp chọn nút "Generate new token" -> Chọn "Generate new token (classic)".
+  - Bước 3: Tại ô Note, nhập tên gợi nhớ bất kỳ (ví dụ: apex-cli).
+  - Bước 4: (QUAN TRỌNG): Bạn không cần tích chọn bất kỳ ô quyền hạn (scopes) nào ở bên dưới. Hãy để trống toàn bộ các quyền để đảm bảo an toàn bảo mật tuyệt đối cho tài khoản của bạn.
+  - Bước 5: Kéo xuống cuối trang và nhấp chọn nút xanh "Generate token".
+  - Bước 6: Copy đoạn mã token nhận được (chuỗi bắt đầu bằng ghp_...) và dán vào CLI.
+  
+* Nếu chọn 2 (OpenRouter - Nhiều mô hình trực tuyến):
+  - Bước 1: Truy cập trang quản lý mã khóa của OpenRouter: https://openrouter.ai/keys
+  - Bước 2: Đăng ký/đăng nhập tài khoản, nhấp chọn nút "Create Key" (hoặc "New key").
+  - Bước 3: Đặt tên cho khóa API của bạn rồi nhấp chọn nút "Create".
+  - Bước 4: Sao chép (Copy) mã khóa API hiển thị trên màn hình (bắt đầu bằng sk-or-v1-...).
+  - Bước 5: Dán mã khóa vừa copy vào dòng lệnh CLI.
+
+* Vị trí lưu cấu hình an toàn trên máy của bạn: ~/.apex-cli/.env
+
+
+5. HƯỚNG DẪN SỬ DỤNG
+────────────────────────────────────────────────────────────────────────────────
+
+A. Sử Dụng Qua Dòng Lệnh CLI:
+Sau khi vào giao diện tương tác của `apex-cli`, bạn có thể trò chuyện trực tiếp 
+với AI hoặc gõ các lệnh bắt đầu bằng ký tự gạch chéo `/`:
+
+* /help             - Hiển thị menu hướng dẫn lệnh chi tiết.
+* /status           - Xem trạng thái dự án hiện tại và số lượng tệp đã index.
+* /index            - Quét và xây dựng lại chỉ mục mã nguồn dự án.
+* /search <keyword> - Tìm kiếm tệp tin hoặc symbols (hàm, biến) bằng Hybrid Search.
+* /add <path>       - Đính kèm một tệp cụ thể vào ngữ cảnh trò chuyện AI.
+* /view <path>      - Đọc nội dung tệp tin trực tiếp kèm số dòng.
+* /files            - Liệt kê các tệp tin đang đính kèm trong ngữ cảnh.
+* /clear            - Dọn dẹp lịch sử trò chuyện và các tệp đính kèm.
+* /models           - Danh sách các mô hình AI trực tuyến đang phổ biến.
+* /config           - Xem cấu hình hiện tại hoặc thay đổi thiết lập động:
+    - Xem cấu hình:   /config
+    - Đổi nhà cung cấp: /config provider github (hoặc openrouter)
+    - Đổi mô hình AI: /config model <tên_model> (ví dụ: gpt-4o hoặc gemini-2.5-pro)
+* /agent <yêu cầu>  - Chạy AI Agent tự động lập kế hoạch và sửa đổi mã nguồn.
+* /checkpoint       - Chụp ảnh sao lưu dự phòng nhanh.
+* /revert           - Khôi phục mã nguồn về checkpoint gần nhất.
+* /diff             - Xem các thay đổi làm việc hiện tại so với git.
+* /exit hoặc /quit  - Thoát khỏi Apex CLI.
+
+B. Khởi Chạy Giao Diện Đồ Họa Web IDE (Dashboard):
+Nếu bạn yêu thích giao diện Dashboard đa chức năng, sang trọng với thiết kế 
+Glassmorphism mờ ảo kết hợp cùng biểu đồ sức khỏe mã nguồn (Project Health Gauge), 
+hãy chạy lệnh:
+
+$ apex-cli ui
+
+Hệ thống sẽ tự động khởi chạy máy chủ cục bộ và mở trình duyệt tại địa chỉ:
+👉 http://localhost:5000
+
+
+6. HƯỚNG DẪN CẬP NHẬT PHIÊN BẢN MỚI
+────────────────────────────────────────────────────────────────────────────────
+Dự án được cập nhật tính năng và sửa lỗi liên tục. Để cập nhật ứng dụng lên phiên 
+bản mới nhất từ NPM, hãy chạy lệnh sau:
+
+$ npm install -g apex-coder-cli@latest
+
+Kiểm tra phiên bản hiện tại đang cài đặt trên máy bằng lệnh:
+$ apex-cli -v
+
+
+7. BẢN QUYỀN & GIẤY PHÉP SỬ DỤNG (COPYRIGHT & LICENSE)
+────────────────────────────────────────────────────────────────────────────────
+* Công cụ dòng lệnh `apex-coder-cli` được phân phối công khai qua npm để cộng đồng 
+  lập trình viên sử dụng miễn phí.
+* Toàn bộ mã nguồn gốc, thuật toán xử lý AI Agent, thiết kế đồ họa Dashboard Web IDE 
+  và cơ sở dữ liệu đều thuộc bản quyền trí tuệ của MaiTamDev (Copyright © 2026).
+* Nghiêm cấm mọi hành vi sao chép thương mại, dịch ngược mã nguồn (reverse engineer) 
+  hoặc tái phân phối phần mềm khi chưa có sự đồng ý bằng văn bản của MaiTamDev.
+
+================================================================================
+                    CẢM ƠN BẠN ĐÃ SỬ DỤNG APEX CODER CLI! 🚀
+================================================================================
