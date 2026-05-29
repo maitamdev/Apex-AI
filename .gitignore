@@ -2,5 +2,6 @@
 *
 
 # Allow tracking only these specific documentation files
+!README.md
 !INTRODUCTION.txt
 !.gitignore
