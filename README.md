@@ -1,4 +1,4 @@
-# 🚀 APEX CODER CLI (APEX-CLI) v1.3.6
+# 🚀 APEX CODER CLI (APEX-CLI) v1.3.7
 
 **APEX-CLI** là một **AI Coding Companion / AI Coding Agent** chạy trực tiếp trên Terminal hệ thống hoặc giao diện đồ họa **Web Dashboard**, được thiết kế để hỗ trợ lập trình viên tương tác và phát triển dự án nhanh chóng, hiệu quả dựa trên ngữ cảnh thực tế của codebase.
 
